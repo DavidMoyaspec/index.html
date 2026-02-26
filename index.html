@@ -18,14 +18,13 @@
             margin: 0;
             overflow: hidden;
             font-family: 'Arial', sans-serif;
-            touch-action: manipulation;
         }
 
         body::before {
             content: '';
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.4); 
+            background: rgba(0, 0, 0, 0.3); 
             z-index: 0;
         }
 
@@ -36,38 +35,32 @@
             align-items: center;
             position: relative;
             z-index: 1;
-            width: 100%;
         }
 
-        /* FOTO CORREGIDA: Sin círculo rosa */
+        /* Foto rectangular sin círculo rosa */
         .user-photo {
-            width: 280px; /* Un poco más grande para que luzca */
+            width: 250px;
             height: auto;
-            border: 2px solid white; /* Un borde fino blanco para que resalte */
-            border-radius: 10px; /* Bordes apenas redondeados, no círculo */
-            object-fit: cover;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            animation: fadeIn 2s ease-in;
+            border: 3px solid white;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
         }
 
         .flower {
-            position: relative;
-            transform: scale(0.7); /* Reducida para que no tape la foto */
-            margin-top: -10px;
+            transform: scale(0.6);
+            margin-top: -20px;
         }
 
         .stem {
-            width: 10px;
-            height: 120px;
+            width: 8px;
+            height: 100px;
             background: linear-gradient(to bottom, #2d5a27, #1e3d1a);
             margin: 0 auto;
-            border-radius: 5px;
+            border-radius: 4px;
         }
 
         .petals {
-            position: relative;
-            z-index: 2;
             animation: sway 3s ease-in-out infinite;
         }
 
@@ -77,10 +70,9 @@
             background: #ff4d6d;
             border-radius: 50% 50% 50% 50% / 80% 80% 20% 20%;
             position: absolute;
-            bottom: -10px;
+            bottom: -5px;
             left: 50%;
             transform-origin: bottom center;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
         }
 
         .p1 { transform: translateX(-50%) rotate(0deg); z-index: 3; }
@@ -89,29 +81,14 @@
         .p4 { transform: translateX(-50%) rotate(60deg); background: #c9184a; height: 70px; }
         .p5 { transform: translateX(-50%) rotate(-60deg); background: #c9184a; height: 70px; }
 
-        .leaf {
-            width: 40px;
-            height: 20px;
-            background: #2d5a27;
-            border-radius: 0 100% 0 100%;
-            position: absolute;
-            left: 50%;
-        }
-
-        .l1 { top: 40px; transform: translateX(5px); }
-        .l2 { top: 70px; transform: translateX(-45px) scaleX(-1); }
-
         .message {
             color: white;
-            margin-top: 15px;
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             font-weight: bold;
-            opacity: 0;
-            animation: fadeIn 2s ease-in forwards 1.5s;
             background: rgba(0,0,0,0.5);
             padding: 10px 20px;
             border-radius: 20px;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            margin-top: 10px;
         }
 
         @keyframes sway {
@@ -119,21 +96,16 @@
             50% { transform: rotate(3deg); }
         }
 
-        @keyframes fadeIn {
-            to { opacity: 1; }
+        .thumb {
+            position: fixed;
+            font-size: 40px;
+            pointer-events: none;
+            animation: floatUp 1s ease-out forwards;
         }
 
         @keyframes floatUp {
-            0% { transform: translateY(0) scale(1); opacity: 1; }
-            100% { transform: translateY(-150px) scale(1.8); opacity: 0; }
-        }
-
-        .thumb {
-            position: fixed;
-            font-size: 50px;
-            pointer-events: none;
-            z-index: 9999;
-            animation: floatUp 0.8s ease-out forwards;
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-100px); opacity: 0; }
         }
     </style>
 </head>
@@ -144,7 +116,7 @@
     </audio>
 
     <div class="container">
-        <img src="foto1.png.jpeg" class="user-photo" alt="Foto">
+        <img src="foto1.png" class="user-photo" alt="Foto">
         
         <div class="flower">
             <div class="petals">
@@ -154,41 +126,31 @@
                 <div class="petal p4"></div>
                 <div class="petal p5"></div>
             </div>
-            <div class="stem">
-                <div class="leaf l1"></div>
-                <div class="leaf l2"></div>
-            </div>
+            <div class="stem"></div>
         </div>
 
         <div class="message">
-            ¡Te amo mucho mi caracolito🙌! <br>
-            <small style="font-size: 0.8rem; font-weight: normal;">(Toca la pantalla para la música 🎵)</small>
+            ¡Te amo mucho mi caracolito🙌❤️! <br>
+            <span style="font-size: 0.7rem;">(Toca la pantalla para que suene la música perra)</span>
         </div>
     </div>
 
     <script>
         const audio = document.getElementById('miAudio');
-        let musicaIniciada = false;
+        let play = false;
 
-        function manejarInteraccion(x, y) {
-            // Iniciar música al primer toque o clic
-            if (!musicaIniciada) {
-                audio.play().catch(error => console.log("Esperando interacción..."));
-                musicaIniciada = true;
+        document.addEventListener('click', (e) => {
+            if(!play) {
+                audio.play();
+                play = true;
             }
-
-            const thumb = document.createElement('div');
-            thumb.className = 'thumb';
-            thumb.innerText = ' ❤️ '; // He quitado el emoji de burla para que sea más tierno, puedes volver a ponerlo si quieres
-            thumb.style.left = (x - 25) + 'px';
-            thumb.style.top = (y - 25) + 'px';
-            document.body.appendChild(thumb);
-            setTimeout(() => { thumb.remove(); }, 800);
-        }
-
-        document.addEventListener('mousedown', (e) => manejarInteraccion(e.clientX, e.clientY));
-        document.addEventListener('touchstart', (e) => {
-            manejarInteraccion(e.touches[0].clientX, e.touches[0].clientY);
+            const t = document.createElement('div');
+            t.className = 'thumb';
+            t.innerText = '🖕❤️😂';
+            t.style.left = e.clientX + 'px';
+            t.style.top = e.clientY + 'px';
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 1000);
         });
     </script>
 </body>
