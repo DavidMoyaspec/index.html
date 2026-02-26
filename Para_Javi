@@ -142,7 +142,7 @@
     </audio>
 
     <div class="container">
-        <img src="foto.png" class="user-photo" alt="Foto">
+        <img src="foto1.png" class="user-photo" alt="Foto">
         <div class="flower">
             <div class="petals">
                 <div class="petal p1"></div>
